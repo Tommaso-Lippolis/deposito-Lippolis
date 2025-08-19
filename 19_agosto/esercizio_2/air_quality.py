@@ -64,6 +64,10 @@ print("Logistic Regression Classifier Report:")
 print(classification_report(y_test, y_pred_log))
 
 
+top3 = df.sort_values('CO(GT)', ascending=False).head(3)
+print("Le 3 ore di picco CO(GT):")
+print(top3[['Date', 'Time', 'CO(GT)']])
+
 
 
 
