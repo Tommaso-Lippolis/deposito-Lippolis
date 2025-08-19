@@ -1,3 +1,3 @@
-from prova import main
+from prova.main import main
 
 main()
