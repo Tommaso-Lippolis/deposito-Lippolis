@@ -38,7 +38,7 @@ scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
-nn_classifier = MLPClassifier(random_state=42, max_iter=1000)
+nn_classifier = MLPClassifier(random_state=42, max_iter=1000, hidden_layer_sizes=(50, 30, 10))
 nn_classifier.fit(X_train_scaled, y_train)
 y_pred_nn = nn_classifier.predict(X_test_scaled)
 print("Neural Network Classifier Report:")
