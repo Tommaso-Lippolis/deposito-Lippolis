@@ -5,6 +5,8 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report
+import matplotlib.pyplot as plt
+from sklearn.tree import plot_tree
 
 # #### Caricamento del dataset
 # Kaggle "AEP_hourly": columns => ["Datetime", "AEP_MW"]
@@ -32,6 +34,13 @@ dt_classifier.fit(X_train, y_train)
 y_pred_dt = dt_classifier.predict(X_test)
 print("Decision Tree Classifier Report:")
 print(classification_report(y_test, y_pred_dt))
+
+# plotting the decision tree
+plt.figure(figsize=(12, 8))
+plot_tree(dt_classifier, filled=True, feature_names=X.columns, class_names=["Basso Consumo", "Alto Consumo"])
+plt.title("Decision Tree Classifier")
+plt.show()
+
 
 # Neural Network
 scaler = StandardScaler()
