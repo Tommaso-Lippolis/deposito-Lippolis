@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report
 
 # #### Caricamento del dataset
-df = pd.read_csv("19_agosto\esercizio_2\AirQualityUCI.csv", sep=';')
+df = pd.read_csv("Lezione_2\esercizio_2\AirQualityUCI.csv", sep=";")
 
 # vediamo seci sono valori nulli
 print("Valori nulli per colonna:")
@@ -37,12 +37,19 @@ df["CO(GT)"] = pd.to_numeric(df["CO(GT)"].astype(str).str.replace(',', '.'), err
 df['AirQuality'] = (df['CO(GT)'] < df['CO(GT)'].mean()).astype(int)
 
 print("Distribuzione della qualità dell'aria:")
-print(df['AirQuality'].value_counts())
+print(df["AirQuality"].value_counts(normalize=True))
 
 
-# come input valore inquinante CO e l ora il resto droppiamo
-df['Hour'] = pd.to_datetime(df['Time'], format='%H.%M.%S', errors='coerce').dt.hour
-X = df[['Hour']]
+# come input valore inquinante CO e l ora, il giorno e il mese il resto droppiamo
+df["Hour"] = pd.to_datetime(df["Time"], format="%H.%M.%S", errors="coerce").dt.hour
+df["Date"] = pd.to_datetime(df["Date"], format="%d/%m/%Y", errors="coerce")
+df["Day"] = df["Date"].dt.day
+df["Month"] = df["Date"].dt.month
+df = df.drop(columns=["Date", "Time"])
+
+df.head()
+
+X = df[["Hour", "Day", "Month"]]
 
 y = df['AirQuality']
 
@@ -66,12 +73,4 @@ print(classification_report(y_test, y_pred_log))
 
 top3 = df.sort_values('CO(GT)', ascending=False).head(3)
 print("Le 3 ore di picco CO(GT):")
-print(top3[['Date', 'Time', 'CO(GT)']])
-
-
-
-
-
-
-
-
+print(top3[["Month", "Day", "Hour", "CO(GT)"]])
