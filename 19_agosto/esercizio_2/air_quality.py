@@ -1,7 +1,5 @@
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-import xgboost as xgb
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report
@@ -32,7 +30,7 @@ df = df.dropna()
 print("Valori nulli dopo la pulizia:")
 print(df.isnull().sum())
 
-# Converte tutte le colonne tranne Date e Time in float
+# Converte 'CO(GT)' in numerico, sostituendo le virgole con i punti
 df["CO(GT)"] = pd.to_numeric(df["CO(GT)"].astype(str).str.replace(',', '.'), errors='coerce')
 
 # identifichiamo come buona qualita dell aria o scarsa qualita dell'aria in base alla media globale
