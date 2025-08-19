@@ -1,0 +1,8 @@
+Number of rows: 16
+Number of words: 486
+Top 5 occurrences:
+is: 24
+Lorem: 18
+Ipsum: 18
+text: 18
+of: 18
