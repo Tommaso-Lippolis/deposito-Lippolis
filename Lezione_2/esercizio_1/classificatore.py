@@ -1,16 +1,15 @@
 # #### Setup iniziale
+import matplotlib.pyplot as plt
 import pandas as pd
+from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import classification_report
-import matplotlib.pyplot as plt
-from sklearn.tree import plot_tree
+from sklearn.tree import DecisionTreeClassifier, plot_tree
 
 # #### Caricamento del dataset
 # Kaggle "AEP_hourly": columns => ["Datetime", "AEP_MW"]
-df = pd.read_csv("19_agosto\esercizio_1\AEP_hourly.csv", parse_dates=["Datetime"])
+df = pd.read_csv("Lezione_2\esercizio_1\AEP_hourly.csv", parse_dates=["Datetime"])
 
 # #### Preprocessing
 df["Hour"] = df["Datetime"].dt.hour
@@ -37,7 +36,12 @@ print(classification_report(y_test, y_pred_dt))
 
 # plotting the decision tree
 plt.figure(figsize=(12, 8))
-plot_tree(dt_classifier, filled=True, feature_names=X.columns, class_names=["Basso Consumo", "Alto Consumo"])
+plot_tree(
+    dt_classifier,
+    filled=True,
+    feature_names=X.columns,
+    class_names=["Basso Consumo", "Alto Consumo"],
+)
 plt.title("Decision Tree Classifier")
 plt.show()
 
@@ -47,7 +51,9 @@ scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
-nn_classifier = MLPClassifier(random_state=42, max_iter=1000, hidden_layer_sizes=(50, 30, 10))
+nn_classifier = MLPClassifier(
+    random_state=42, max_iter=1000, hidden_layer_sizes=(50, 30, 10)
+)
 nn_classifier.fit(X_train_scaled, y_train)
 y_pred_nn = nn_classifier.predict(X_test_scaled)
 print("Neural Network Classifier Report:")

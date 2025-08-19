@@ -1,5 +1,5 @@
-from sklearn.model_selection import train_test_split
 import pandas as pd
+from sklearn.model_selection import train_test_split
 
 df = pd.read_csv("19_agosto\esercizio_1\AEP_hourly.csv", parse_dates=["Datetime"])
 
@@ -34,12 +34,12 @@ df["target"] = (df["AEP_MW"] > df["AEP_MW"].median()).astype(int)
 # plt.show()
 
 
+from sklearn.metrics import make_scorer, roc_auc_score
 from sklearn.model_selection import StratifiedKFold, cross_val_score
-from sklearn.tree import DecisionTreeClassifier
 from sklearn.neural_network import MLPClassifier
-from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
-from sklearn.metrics import roc_auc_score, make_scorer
+from sklearn.preprocessing import StandardScaler
+from sklearn.tree import DecisionTreeClassifier
 
 # Feature e target (come prima)
 X = df[["hour", "dayofweek", "month"]]
@@ -53,10 +53,15 @@ tree = DecisionTreeClassifier(max_depth=5, random_state=42)
 auc_tree = cross_val_score(tree, X, y, cv=skf, scoring="roc_auc")
 
 # Neural Network con scaling
-mlp_pipeline = Pipeline([
-    ("scaler", StandardScaler()),
-    ("mlp", MLPClassifier(hidden_layer_sizes=(64, 32), max_iter=300, random_state=42))
-])
+mlp_pipeline = Pipeline(
+    [
+        ("scaler", StandardScaler()),
+        (
+            "mlp",
+            MLPClassifier(hidden_layer_sizes=(64, 32), max_iter=300, random_state=42),
+        ),
+    ]
+)
 auc_mlp = cross_val_score(mlp_pipeline, X, y, cv=skf, scoring="roc_auc")
 
 print(f"Decision Tree AUC: {auc_tree.mean():.3f} ± {auc_tree.std():.3f}")
