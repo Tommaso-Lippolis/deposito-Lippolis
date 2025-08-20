@@ -87,5 +87,28 @@ numerical_features = ['Numero_Acquisti', 'CLV', 'Spesa_Media_per_transazione', '
 customer_analysis[numerical_features] = scaler.fit_transform(customer_analysis[numerical_features])
 
 
+# clustering con KMeans
+print('Clustering con KMeans')
+for n_clusters in range(2, 6):
+    kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+    customer_analysis['Cluster'] = kmeans.fit_predict(customer_analysis[numerical_features])
+    
+    # Calcolo del Silhouette Score
+    silhouette_avg = silhouette_score(customer_analysis[numerical_features], customer_analysis['Cluster'])
+    print(f'Silhouette Score per {n_clusters} cluster: {silhouette_avg}')
+    
 
+    # PCA per visualizzare i cluster
+    pca = PCA(n_components=2)
+    principal_components = pca.fit_transform(customer_analysis[numerical_features])
+
+    customer_analysis['PCA1'] = principal_components[:, 0]
+    customer_analysis['PCA2'] = principal_components[:, 1]
+    plt.figure(figsize=(8, 6))
+    sns.scatterplot(x='PCA1', y='PCA2', hue='Cluster', data=customer_analysis, palette='viridis', s=100)
+    plt.title(f'Visualizzazione dei Cluster con {n_clusters} Cluster')
+    plt.xlabel('PCA1')
+    plt.ylabel('PCA2')
+    plt.legend(title='Cluster')
+    plt.show()
    
