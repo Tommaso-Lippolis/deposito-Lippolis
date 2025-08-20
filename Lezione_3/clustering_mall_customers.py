@@ -32,7 +32,7 @@ print(data.head())
 # evidenziamo la distanza euclidea tra le prime due istanze
 print("Euclidean distance between the first two instances:")
 
-
+# non so se eliminare gli outliers o meno, per ora li lascio
 
 # Standardize the data
 scaler = StandardScaler()
@@ -63,7 +63,7 @@ silhouette_kmeans = silhouette_score(data_scaled, kmeans.labels_)
 print("Silhouette Score for KMeans:", silhouette_kmeans)
 
 # Apply DBSCAN clustering
-dbscan = DBSCAN(eps=0.5, min_samples=5)
+dbscan = DBSCAN(eps=0.38, min_samples=5)
 dbscan.fit(data_scaled)
 
 # Plotting the DBSCAN clusters
