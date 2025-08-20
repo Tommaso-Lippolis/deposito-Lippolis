@@ -41,3 +41,20 @@ data_scaled = scaler.fit_transform(data)
 dist = euclidean_distances([data_scaled[0]], [data_scaled[1]])
 print("Euclidean distance:", dist)
 
+# Apply KMeans clustering
+kmeans = KMeans(n_clusters=5, random_state=42)
+kmeans.fit(data_scaled)
+
+print("KMeans cluster centers:")
+print(kmeans.cluster_centers_)
+
+#plotting the clusters
+plt.figure(figsize=(10, 6))
+plt.scatter(data_scaled[:, 0], data_scaled[:, 1], c=kmeans.labels_, cmap='viridis', marker='o', edgecolor='k')
+plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], s=300, c='red', marker='X', label='Centroids')
+plt.title('KMeans Clustering of Mall Customers')
+plt.xlabel('Annual Income (scaled)')
+plt.ylabel('Spending Score (scaled)')
+plt.legend()
+plt.show()
+
