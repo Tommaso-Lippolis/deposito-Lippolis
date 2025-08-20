@@ -53,8 +53,30 @@ plt.figure(figsize=(10, 6))
 plt.scatter(data_scaled[:, 0], data_scaled[:, 1], c=kmeans.labels_, cmap='viridis', marker='o', edgecolor='k')
 plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], s=300, c='red', marker='X', label='Centroids')
 plt.title('KMeans Clustering of Mall Customers')
-plt.xlabel('Annual Income (scaled)')
-plt.ylabel('Spending Score (scaled)')
+plt.xlabel('Annual Income')
+plt.ylabel('Spending Score')
 plt.legend()
 plt.show()
+
+# Calculate silhouette score for KMeans
+silhouette_kmeans = silhouette_score(data_scaled, kmeans.labels_)
+print("Silhouette Score for KMeans:", silhouette_kmeans)
+
+# Apply DBSCAN clustering
+dbscan = DBSCAN(eps=0.5, min_samples=5)
+dbscan.fit(data_scaled)
+
+# Plotting the DBSCAN clusters
+plt.figure(figsize=(10, 6))
+plt.scatter(data_scaled[:, 0], data_scaled[:, 1], c=dbscan.labels_, cmap='viridis', marker='o', edgecolor='k')
+plt.title('DBSCAN Clustering of Mall Customers')
+plt.xlabel('Annual Income')
+plt.ylabel('Spending Score')
+plt.colorbar(label='Cluster Label')
+plt.show()
+
+silhouette_dbscan = silhouette_score(data_scaled, dbscan.labels_)
+print("Silhouette Score for DBSCAN:", silhouette_dbscan)
+
+
 
