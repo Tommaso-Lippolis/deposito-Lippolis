@@ -63,7 +63,7 @@ silhouette_kmeans = silhouette_score(data_scaled, kmeans.labels_)
 print("Silhouette Score for KMeans:", silhouette_kmeans)
 
 # Apply DBSCAN clustering
-dbscan = DBSCAN(eps=0.38, min_samples=5)
+dbscan = DBSCAN(eps=0.5, min_samples=5)
 dbscan.fit(data_scaled)
 
 # Plotting the DBSCAN clusters
@@ -79,4 +79,22 @@ silhouette_dbscan = silhouette_score(data_scaled, dbscan.labels_)
 print("Silhouette Score for DBSCAN:", silhouette_dbscan)
 
 
+# Apply DBSCAN clustering optimized
+dbscan_optimized = DBSCAN(eps=0.38, min_samples=5)
+dbscan_optimized.fit(data_scaled)
 
+# Plotting the optimized DBSCAN clusters
+plt.figure(figsize=(10, 6))
+plt.scatter(data_scaled[:, 0], data_scaled[:, 1], c=dbscan_optimized.labels_, cmap='viridis', marker='o', edgecolor='k')
+plt.title('Optimized DBSCAN Clustering of Mall Customers')
+plt.xlabel('Annual Income')
+plt.ylabel('Spending Score')
+plt.colorbar(label='Cluster Label')
+plt.show()
+
+# Calculate silhouette score for optimized DBSCAN
+silhouette_dbscan_optimized = silhouette_score(data_scaled, dbscan_optimized.labels_)
+print("Silhouette Score for Optimized DBSCAN:", silhouette_dbscan_optimized)
+
+# differenza tra i due silhouette score
+print("Difference in Silhouette Scores between DBSCAN and Optimized DBSCAN:", silhouette_dbscan_optimized - silhouette_dbscan)
