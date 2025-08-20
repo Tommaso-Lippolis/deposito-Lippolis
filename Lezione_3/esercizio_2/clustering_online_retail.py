@@ -19,6 +19,10 @@ print(df.info())
 
 # controlliamo i duplicati
 print('Numero di righe duplicate:', df.duplicated().sum())
+
+# rimuoviamo le righe duplicate
+df = df.drop_duplicates()
+
 # Statistiche descrittive del dataset
 print('Statistiche descrittive del dataset:')
 print(df.describe())
