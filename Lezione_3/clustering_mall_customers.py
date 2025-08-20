@@ -4,6 +4,7 @@ from sklearn.preprocessing import StandardScaler
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics import silhouette_score
+from sklearn.metrics.pairwise import euclidean_distances
 
 # Load the dataset
 data = pd.read_csv('Lezione_3/Mall Customer dataset/Mall_Customers.csv')
@@ -28,7 +29,15 @@ data.columns = ['Annual_Income', 'Spending_Score']
 print("First 5 rows after renaming columns:")
 print(data.head())
 
+# evidenziamo la distanza euclidea tra le prime due istanze
+print("Euclidean distance between the first two instances:")
+
 
 
 # Standardize the data
 scaler = StandardScaler()
+data_scaled = scaler.fit_transform(data)
+
+dist = euclidean_distances([data_scaled[0]], [data_scaled[1]])
+print("Euclidean distance:", dist)
+
