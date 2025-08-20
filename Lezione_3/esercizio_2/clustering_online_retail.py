@@ -1,4 +1,11 @@
 import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+import seaborn as sns
 
 
 df = pd.read_csv('Lezione_3\esercizio_2\Online Retail dataset\Online_Retail.csv', encoding='ISO-8859-1')
@@ -63,3 +70,22 @@ customer_analysis['Spesa_Media_per_Acquisto'] = customer_analysis['CLV'] / custo
  
 # Mostra i risultati
 print(customer_analysis.head(10))
+
+# label encoding per la colonna 'Country'
+
+le = LabelEncoder()
+customer_analysis['Paese'] = le.fit_transform(customer_analysis['Paese'])
+
+print('Colonna "Paese" dopo Label Encoding:')
+print(customer_analysis.head())
+
+
+# standardizzazione delle feature numeriche
+scaler = StandardScaler()
+numerical_features = ['Numero_Acquisti', 'CLV', 'Spesa_Media_per_transazione', 'Frequenza_Acquisto', 'Spesa_Media_per_Acquisto']
+
+customer_analysis[numerical_features] = scaler.fit_transform(customer_analysis[numerical_features])
+
+
+
+   
