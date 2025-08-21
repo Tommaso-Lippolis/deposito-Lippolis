@@ -34,6 +34,16 @@ print(df.isnull().sum())
 # rimuoviamo colonna descrizione
 df = df.drop(columns=['Description'])
 
+# sarebbe meglio forse rimuovere le righe con valori nulli in 'CustomerID'  
+# ma potrebbe comunque essere utile per l'analisi dei cluster degli acquisti nei paesi quindi li lasciamo per ora
+# print('controllo dei valori nulli in CustomerID:')
+# print(df['CustomerID'].isnull().sum())
+# # rimuoviamo le righe con valori nulli in 'CustomerID'
+# df = df.dropna(subset=['CustomerID'])
+
+# print('verifica dei valori nulli in CustomerID dopo la rimozione:')
+# print(df['CustomerID'].isnull().sum())
+
 # controlliamo quanti valori diverti ci sono nella colonna 'Country'
 print('Valori unici nella colonna "Country":')
 print(df['Country'].nunique())
@@ -72,7 +82,7 @@ customer_analysis = df.groupby('CustomerID').agg({
 customer_analysis.columns = ['CustomerID', 'Numero_Acquisti', 'CLV', 'Spesa_Media_per_transazione', 'Frequenza_Acquisto', 'Paese']
  
 # Calcola la spesa media per acquisto (non per transazione)
-customer_analysis['Spesa_Media_per_Acquisto'] = customer_analysis['CLV'] / customer_analysis['Numero_Acquisti']
+customer_analysis['Spesa_Media_per_Acquisto'] = customer_analysis['CLV'] / customer_analysis['Numero_Acquisti'] # feature aggiuntiva non esplicitamente richiesta, valutiamo se utile
  
 # Mostra i risultati
 print(customer_analysis.head(10))
