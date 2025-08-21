@@ -72,7 +72,7 @@ customer_analysis = df.groupby('CustomerID').agg({
 customer_analysis.columns = ['CustomerID', 'Numero_Acquisti', 'CLV', 'Spesa_Media_per_transazione', 'Frequenza_Acquisto', 'Paese']
  
 # Calcola la spesa media per acquisto (non per transazione)
-customer_analysis['Spesa_Media_per_Acquisto'] = customer_analysis['CLV'] / customer_analysis['Numero_Acquisti']
+customer_analysis['Spesa_Media_per_Acquisto'] = customer_analysis['CLV'] / customer_analysis['Numero_Acquisti'] # feature aggiuntiva non esplicitamente richiesta, valutiamo se utile
  
 # Mostra i risultati
 print(customer_analysis.head(10))
