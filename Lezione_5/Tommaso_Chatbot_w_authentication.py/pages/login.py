@@ -8,6 +8,7 @@ load_dotenv("Lezione_5/.env")
 api_key = os.getenv("AZURE_OPENAI_API_KEY")
 connection_string = os.getenv("AZURE_OPENAI_ENDPOINT")
 deployment = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
+api_version = os.getenv("AZURE_OPENAI_API_VERSION")
 
 def Authentication(key, endpoint):
     key_incorrect = key != api_key
@@ -31,6 +32,7 @@ if st.button("Login"):
         st.session_state.api_key = key_input
         st.session_state.endpoint = endpoint_input
         st.session_state.deployment = deployment
+        st.session_state.api_version = api_version
         st.switch_page("pages/Chatbot.py")  
     else:
         st.error(result)
