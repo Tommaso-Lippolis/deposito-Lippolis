@@ -3,18 +3,26 @@ import tempfile
 from typing import List, Optional
 from attr import dataclass
 
-from langchain.document_loaders import DirectoryLoader, TextLoader, PyPDFLoader, CSVLoader
+from langchain_community.document_loaders import DirectoryLoader, TextLoader, PyPDFLoader, CSVLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.embeddings import OpenAIEmbeddings, HuggingFaceEmbeddings
-from langchain.vectorstores import FAISS
+from langchain_community.embeddings import OpenAIEmbeddings, HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
 from langchain.schema import Document
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough
 
-import streamlit as st
+from langchain_openai import AzureOpenAIEmbeddings
+from dotenv import load_dotenv
 
 from langchain_azure import AzureChatModel
+
+load_dotenv("Lezione_6/RAG with streamlit/.env")
+endpoint = os.getenv("AZURE_OPENAI_ENDPOINT")
+azure_api_key = os.getenv("AZURE_OPENAI_API_KEY")
+embedding_model = os.getenv("AZURE_OPENAI_EMBEDDING_MODEL")
+llm_model = os.getenv("AZURE_OPENAI_DEPLOYMENT_LLM")
+
 
 @dataclass
 class RetrieverSettings:
@@ -23,10 +31,11 @@ class RetrieverSettings:
     fetch_k: int = 10
     mmr_lambda: float = 0.5
 
+
 class VectorStore:
     def __init__(
         self, 
-        embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2",
+        embedding_model: str = "text-embedding-ada-002",
         vector_store_type: str = "faiss",
         chunk_size: int = 1000,
         chunk_overlap: int = 200
@@ -44,12 +53,18 @@ class VectorStore:
         self.vector_store_type = vector_store_type
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
-        
+
+        Settings = RetrieverSettings()
         # Initialize embeddings
-        if "openai" in embedding_model.lower():
-            self.embeddings = OpenAIEmbeddings(model=embedding_model)
-        else:
-            self.embeddings = HuggingFaceEmbeddings(model_name=embedding_model)
+        self.embeddings = AzureOpenAIEmbeddings(
+            model=embedding_model,
+            azure_endpoint=endpoint,
+            api_key=azure_api_key,
+            )
+        # if "openai" in embedding_model.lower():
+        #     self.embeddings = OpenAIEmbeddings(model=embedding_model)
+        # else:
+        #     self.embeddings = HuggingFaceEmbeddings(model_name=embedding_model)
         
         # Initialize text splitter
         self.text_splitter = RecursiveCharacterTextSplitter(
@@ -326,5 +341,5 @@ class QaBot:
             | self.llm_client
             | StrOutputParser()
         )
-        response = chain({"question": question, "context": retriever})
+        response = chain.invoke(question)
         return response

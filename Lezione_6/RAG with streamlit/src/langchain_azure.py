@@ -12,7 +12,7 @@ from azure.ai.inference.models import SystemMessage, UserMessage
 from azure.core.credentials import AzureKeyCredential
 import dotenv
 
-dotenv.load_dotenv()
+dotenv.load_dotenv("Lezione_6/RAG with streamlit/.env")
 
 class AzureChatModel(BaseChatModel):
     """Custom LangChain chat model wrapper for Azure AI Inference SDK"""
@@ -26,13 +26,15 @@ class AzureChatModel(BaseChatModel):
 
     def __init__(
             self, 
-            endpoint: str = os.getenv("PROJECT_ENDPOINT") + os.getenv("LLM_MODEL"), 
-            api_key: str = os.getenv("ENDPOINT_KEY"), 
-            model_name: str = os.getenv("LLM_MODEL")
+            endpoint: str = os.getenv("AZURE_OPENAI_ENDPOINT"), 
+            api_key: str = os.getenv("AZURE_OPENAI_API_KEY"), 
+            model_name: str = os.getenv("AZURE_OPENAI_DEPLOYMENT_LLM"),
+            api_version: str = os.getenv("AZURE_OPENAI_API_VERSION")
         ):
         client = ChatCompletionsClient(
             endpoint=endpoint,
-            credential=AzureKeyCredential(api_key)
+            credential=AzureKeyCredential(api_key),
+            api_version=api_version
         )
         
         # Pass the required fields to the parent constructor
