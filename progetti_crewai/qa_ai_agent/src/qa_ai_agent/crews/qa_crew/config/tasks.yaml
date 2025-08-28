@@ -1,0 +1,42 @@
+rag_prompt_task:
+  description: >
+    Reformulate the user's question to maximize retrieval quality from the local document collection.
+  expected_output: >
+    A rewritten prompt optimized for document retrieval.
+  agent: rag_prompt_rewriter
+
+rag_retrieval_task:
+  description: >
+    Retrieve the most relevant information from the local document collection based on the rewritten prompt.
+  expected_output: >
+    The most relevant passages or facts from the local files.
+  agent: rag_retriever
+  context:
+    - rag_prompt_task
+
+web_prompt_task:
+  description: >
+    Reformulate the user's question to maximize the effectiveness of web search tools.
+  expected_output: >
+    A rewritten prompt optimized for web search.
+  agent: web_prompt_rewriter
+
+web_search_task:
+  description: >
+    Use web search tools to find the most relevant and up-to-date information for the user's query.
+  expected_output: >
+    The most relevant and recent information from the web.
+  agent: web_searcher
+  context:
+    - web_prompt_task
+
+summarization_task:
+  description: >
+    Take the results (from either the web search or RAG process) and summarize them in a clear, well-structured, and non-redundant Markdown document. Adapt the summary style to the type of source, highlight the most important insights, and ensure the output is actionable and easy to read.
+  expected_output: >
+    If the search or the RAG process has been successful, provide a natural language summary in Markdown format, suitable for end users, that synthesizes the key findings from the web search or RAG process otherwise state that no relevant information was found.
+  agent: summarizer
+  context:
+    - web_search_task
+    - rag_retrieval_task
+  output_file: output/report.md

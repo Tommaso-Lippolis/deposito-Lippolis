@@ -1,0 +1,23 @@
+web_search_task:
+  description: >
+    Perform a web search on the topic provided by the user using the integrated tool and return the 3 most relevant and up-to-date results.
+  agent: web_searcher
+  expected_output: >
+    Combined plain text content extracted from the top 3 relevant web search results.
+
+summarization_task:
+  description: >
+    Take the results of the web search and summarize them in a clear, well-structured, and non-redundant text.
+  agent: summarizer
+  expected_output: >
+    Natural language summary of the web results.
+  output_file: output/report.md
+
+sum_task:
+  description: >
+    Extract the two integers from the user expression using the custom add_numbers tool and present the result in a clear sentence in a Markdown format.
+  agent: calculator
+  expected_output: >
+    The numerical result of the sum, presented in a clear sentence.
+  
+  
